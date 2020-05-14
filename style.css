@@ -1,99 +1,107 @@
-.picture{
+body{
+  width: 1100px;
   position: relative;
-  /*height: 465px;*/
-  height: 380px;
-  width: 1300;
-  background: center url(http://stayathome-syllabus.greenfox.academy/week01/assets/first-website-header.png);
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-
-header{
-  font-family: 'Abril Fatface', cursive;
-  color: #222
+  margin: 0px, auto,
 }
 
 h1{
-  position: absolute;
-  bottom: 30px;
-  left: 350px;
-  font-size: 30px;
-  font-weight: normal;
-  line-height: 1
-}
-
-.Anakin{
-  font-size: 65px;
-}
-
-main, footer {
-  margin-left: 350px;
-  margin-right: 300px;
-  font-family: 'Abril Fatface', cursive;
-  font-family: 'Josefin Sans', sans-serif;
-  color: #222;
-}
-
-.first-p{
-  line-height: 1.5;
-  font-size: 20px;
-}
-
-blockquote::before {
-  content: '”';
-  /*font-family: 'Merriweather', serif;*/
-  font-family: 'Abril Fatface', cursive;
-  font-size: 120px;
-  display: inline-block;
-  position: absolute;
-  transform: rotate(180deg);
-  top:-80px;
-  left:0px;
-}
-
-blockquote{
-  font-family: 'Abril Fatface', cursive;
-  font-size: 53px;
-  color: white;
-  background: #222;
-  /*width: 870px;*/
-  margin-left: -50px;
-  margin-top: 30px;
-  height: 125px;
-  padding: 45px;
+  width: 100%;
+  height: 400px;
+  font-family: 'Abril Fatface', cursive; 
+  color: #222 grey;
   position: relative;
+  background: no-repeat center/100% url("http://stayathome-syllabus.greenfox.academy/week01/assets/first-website-header.png");
+  margin-left: 100px;
 }
-
-h2{
-  font-variant-caps: all-small-caps;
-  margin-top: 45px;
-  margin-bottom: 40px;
+.hi p {
+  position: absolute;
+  line-height: 2em;
   font-size: 30px;
+  font-weight:lighter;
+  top:190px;
+  left: 260px;
+}
+.anakin p {
+  position: absolute;
+  font-size: 60px;
+  font-weight:lighter;
+  top:200px;
+  left: 260px;
 }
 
+.analytical {
+  margin-left: 210px;
+  margin-top: 50px;
+  font-family: 'Josefin Sans', sans-serif;
+  line-height: 1.5em;
+  font-size: 18px;
+}
+main{
+  margin-left: 250px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size:15px;
+  line-height: 1.5em;
+}
 h3{
-  margin-top: 30px;
-  margin-bottom: 0px;
-  font-size: 23px;
-  /*line-height: 1.5;*/
+  text-transform: uppercase;
+  font-size: 25px;
+  margin-top: 60px;
+  margin-bottom:50px;
 }
 
 h4{
-  margin-top: 3px;
-  font-style: italic;
+  font-size: 22px;
+  margin-block-start: 0;
+  margin-block-end: 0;  
 }
 
+h5{
+  font-family: 'Merriweather', serif;
+  font-size: 15px;
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+blockquote{
+  width: 100%;
+  margin-left:-50px;
+  margin-right: 80px;
+  font-family: 'Abril Fatface', cursive; 
+  font-weight: bold;
+  
+}
+
+blockquote p {
+  padding: 30px 20px 30px 70px;
+  background-color: #444;
+  color: white;
+  font-size: 45px;
+  position: relative;
+  text-align-last: left;
+  line-height: 1.7em;
+  text-align: left;
+  
+}
+
+blockquote p::before {
+  
+  content:'\201C';
+  font-size: 120px;
+  position: absolute;
+  padding-left: 0px;
+  
+  left: 10px;
+  top: 30px;
+}
+
+footer{
+  margin:0px 100px 0px 210px;
+  padding-top: 10px;
+  font-family: 'Josefin Sans', sans-serif;
+  border-style: solid none none none;
+  line-height: 1.5em;
+  margin-top:50px;
+}
 ul{
-  line-height: 1.5;
-}
-
-li{
-  margin-left: 25px;
-}
-
-hr{
-  border:solid;
-  margin-top: 45px;
-  margin-left: 350px;
-  margin-right: 300px;
+  list-style-type: square
 }
