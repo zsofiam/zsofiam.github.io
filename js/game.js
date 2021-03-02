@@ -84,19 +84,24 @@ const game = {
 		return [foodRow, foodCol]
 	},
 	placeFood: function (height, width) {
-		let foodRow = this.generateFoodPosition(height, width)[0];
-		let foodCol = this.generateFoodPosition(height, width)[1];
 		let fields = document.querySelectorAll("td");
-		for (let field of fields) {
-			if (parseInt(field.getAttribute('row')) === foodRow && parseInt(field.getAttribute('col')) === foodCol){
-				// if (!field.classList.contains('empty')){
-				// 	foodRow = this.generateFoodPosition(height, width)[0];
-				// 	foodCol = this.generateFoodPosition(height, width)[1];
-				// }
-				field.classList.remove("empty");
-				field.classList.add('food');
+		let foodNeedsPlace = true;
+		while (foodNeedsPlace) {
+			let foodRow = this.generateFoodPosition(height, width)[0];
+			let foodCol = this.generateFoodPosition(height, width)[1];
+			for (let field of fields) {
+				if (parseInt(field.getAttribute('row')) === foodRow && parseInt(field.getAttribute('col')) === foodCol){
+					if (!field.classList.contains('empty')){
+						break;
+					} else {
+						field.classList.remove("empty");
+						field.classList.add('food');
+						foodNeedsPlace = false;
+					}
+				}
 			}
 		}
+
 	}
 };
 
