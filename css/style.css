@@ -40,6 +40,7 @@ tr {
 .snake-head {
 	background-color: green;
 	color: black;
+	font-weight: bold;
 }
 .snake {
 	background-color: green;

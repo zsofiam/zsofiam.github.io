@@ -5,18 +5,24 @@ const game = {
         const size = urlParams.get('size');
         let boardHeight = 14;
         let boardWidth = 18;
+        let headRow = 7;
+        let headCol = 6;
         switch (size) {
 			case 'small':
 				boardHeight = 8;
         		boardWidth = 10;
+        		headRow = 3;
+        		headCol = 5;
         		break;
 			case 'large':
 				boardHeight = 20;
         		boardWidth = 26;
+        		headRow = 10;
+        		headCol = 10;
         		break;
 		}
         this.generateBoard(boardHeight, boardWidth);
-        this.putSnakeOnTheBoard(7, 6, 5);
+        this.putSnakeOnTheBoard(headRow, headCol, 5);
 	},
 
 	generateBoard: function(height, width) {
