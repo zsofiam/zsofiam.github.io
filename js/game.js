@@ -2,10 +2,21 @@ const game = {
 	init: function() {
 		const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
-        const boardHeight = parseInt(urlParams.get('height'));
-        const boardWidth = parseInt(urlParams.get('width'));
-
+        const size = urlParams.get('size');
+        let boardHeight = 14;
+        let boardWidth = 18;
+        switch (size) {
+			case 'small':
+				boardHeight = 8;
+        		boardWidth = 10;
+        		break;
+			case 'large':
+				boardHeight = 20;
+        		boardWidth = 26;
+        		break;
+		}
         this.generateBoard(boardHeight, boardWidth);
+        this.putSnakeOnTheBoard(9, 12, 5);
 	},
 
 	generateBoard: function(height, width) {
@@ -41,8 +52,23 @@ const game = {
     addCell: function (rowElement, row, col) {
         rowElement.insertAdjacentHTML(
             'beforeend',
-            `<td data-row="${row}" data-col="${col}"></td>`);
+            `<td row="${row}" col="${col}"></td>`);
     },
+
+    putSnakeOnTheBoard: function(headRow, headCol, length) {
+    	let fields = document.querySelectorAll("td");
+    	for (let i = 0; i < fields.length; i++) {
+    		//Head
+    		if (fields[i].getAttribute("row") == headRow && fields[i].getAttribute("col") == headCol) {
+    			fields[i].classList.add("snake-head");
+    			fields[i].innerText = ":3";
+    		}
+    		//Body
+    		else if (fields[i].getAttribute("row") == headRow && (fields[i].getAttribute("col") > headCol-length) && fields[i].getAttribute("col") < headCol) {
+				fields[i].classList.add("snake");
+    		}
+    	}
+    }
 };
 
 game.init();

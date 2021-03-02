@@ -8,11 +8,24 @@
 <body>
 	<div class="center border">
 		<h1>Snake Game</h1>
+<!--		image? -->
 		<form method="GET", action="game.html">
-			<label for="height">Height:</label><br>
-			<input type="number" name="height" value="20"><br>
-			<label for="width">Width:</label><br>
-			<input type="number" name="width" value="20"><br><br>
+			<h2>Customize your snake!</h2>
+			<label for="player-name">Name:</label><br>
+			<input type="text" name="player-name" id="player-name"required><br><br>
+			<label for="skin">Skin color:</label><br>
+			<select name="skin" id="skin">
+				<option value="green">Green</option>
+				<option value="blue">Blue</option>
+				<option value="purple">Purple</option>
+			</select>
+			<h2>Customize the board!</h2>
+			<label for="size">Size:</label><br>
+			<select name="size" id="size" size="3">
+				<option value="small">Small (8x10)</option>
+				<option value="medium" selected>Medium (14x18)</option>
+				<option value="large">Large (20x26)</option>
+			</select><br><br>
 			<input type="submit" name="submit" value="Play!">
 		</form>
 	</div>
