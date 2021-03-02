@@ -21,8 +21,9 @@ const game = {
         		headCol = 10;
         		break;
 		}
+		const color = urlParams.get('skin');
         this.generateBoard(boardHeight, boardWidth);
-        this.putSnakeOnTheBoard(headRow, headCol, 5);
+        this.putSnakeOnTheBoard(color, headRow, headCol, 5);
         this.placeFood(boardHeight, boardWidth);
         this.initMove();
 	},
@@ -63,19 +64,20 @@ const game = {
             `<td row="${row}" col="${col}" class="empty"></td>`);
     },
 
-    putSnakeOnTheBoard: function(headRow, headCol, length) {
+    putSnakeOnTheBoard: function(color, headRow, headCol, length) {
     	let fields = document.querySelectorAll("td");
     	for (let i = 0; i < fields.length; i++) {
     		//Head
     		if (fields[i].getAttribute("row") == headRow && fields[i].getAttribute("col") == headCol) {
     			fields[i].classList.remove("empty");
+    			fields[i].classList.add(color)
     			fields[i].classList.add("snake-head");
     			fields[i].innerText = ":3";
     		}
     		//Body
     		else if (fields[i].getAttribute("row") == headRow && (fields[i].getAttribute("col") > headCol-length) && fields[i].getAttribute("col") < headCol) {
 				fields[i].classList.remove("empty");
-    			fields[i].classList.add("snake");
+    			fields[i].classList.add(color);
     		}
     	}
     },

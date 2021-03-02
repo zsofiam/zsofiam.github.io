@@ -38,16 +38,24 @@ tr {
 	color: white;
 }
 .snake-head {
-	background-color: green;
 	color: black;
 	font-weight: bold;
-}
-.snake {
-	background-color: green;
 }
 .food {
 	background-color: red;
 }
 .empty {
 	background-color: black;
+}
+.green {
+	background-color: green;
+}
+.blue{
+	background-color: blue;
+}
+.purple{
+	background-color: purple;
+}
+.yellow{
+	background-color: yellow;
 }
