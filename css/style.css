@@ -48,3 +48,6 @@ tr {
 .food {
 	background-color: red;
 }
+.empty {
+	background-color: black;
+}

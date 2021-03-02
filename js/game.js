@@ -59,7 +59,7 @@ const game = {
     addCell: function (rowElement, row, col) {
         rowElement.insertAdjacentHTML(
             'beforeend',
-            `<td row="${row}" col="${col}"></td>`);
+            `<td row="${row}" col="${col}" class="empty"></td>`);
     },
 
     putSnakeOnTheBoard: function(headRow, headCol, length) {
@@ -67,12 +67,14 @@ const game = {
     	for (let i = 0; i < fields.length; i++) {
     		//Head
     		if (fields[i].getAttribute("row") == headRow && fields[i].getAttribute("col") == headCol) {
+    			fields[i].classList.remove("empty");
     			fields[i].classList.add("snake-head");
     			fields[i].innerText = ":3";
     		}
     		//Body
     		else if (fields[i].getAttribute("row") == headRow && (fields[i].getAttribute("col") > headCol-length) && fields[i].getAttribute("col") < headCol) {
-				fields[i].classList.add("snake");
+				fields[i].classList.remove("empty");
+    			fields[i].classList.add("snake");
     		}
     	}
     },
@@ -86,10 +88,12 @@ const game = {
 		let foodCol = this.generateFoodPosition(height, width)[1];
 		let fields = document.querySelectorAll("td");
 		for (let field of fields) {
-			if (field.getAttribute('row') === foodRow && field.getAttribute('col') === foodCol){
-				if (field.classList.contains('snake') || field.classList.contains('snake-head')){
-					foodRow, foodCol = this.generateFoodPosition(height, width)
-				}
+			if (parseInt(field.getAttribute('row')) === foodRow && parseInt(field.getAttribute('col')) === foodCol){
+				// if (!field.classList.contains('empty')){
+				// 	foodRow = this.generateFoodPosition(height, width)[0];
+				// 	foodCol = this.generateFoodPosition(height, width)[1];
+				// }
+				field.classList.remove("empty");
 				field.classList.add('food');
 			}
 		}
