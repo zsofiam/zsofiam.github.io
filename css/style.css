@@ -1,1 +1,39 @@
-style.css
+body, html {
+	background-color: black;
+}
+td {
+	width: 20px;
+	text-align: center;
+}
+tr {
+	height: 20px;
+}
+.game-field {
+	text-align: center;
+	color: white;
+}
+.go-home {
+	margin-top: 20px;
+	text-align: center;
+	color: white;
+}
+.go-home a {
+	color: white;
+	text-decoration: none;
+}
+.go-home a:hover {
+	color: gray;
+	text-decoration: none;
+}
+.border {
+	border-style: dotted;
+	border-color: white;
+}
+.center {
+	padding-bottom: 20px;
+	padding-top: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	color: white;
+}
