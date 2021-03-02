@@ -24,6 +24,7 @@ const game = {
         this.generateBoard(boardHeight, boardWidth);
         this.putSnakeOnTheBoard(headRow, headCol, 5);
         this.placeFood(boardHeight, boardWidth);
+        this.initMove();
 	},
 
 	generateBoard: function(height, width) {
@@ -102,6 +103,54 @@ const game = {
 			}
 		}
 
+	},
+	getSnakePositions: function(){
+		let fields = document.querySelectorAll("td");
+		let row;
+		let col;
+		let snakeList = [];
+		let length = 0;
+		for (let field of fields){
+			if (field.classList.contains('snake-head')){
+				row = parseInt(field.getAttribute('row'));
+				col = parseInt(field.getAttribute('col'));
+				length = snakeList.push([row, col]);
+			}
+		}
+		return {snakeList, length}
+	},
+	initMove: function(){
+		let fields = document.querySelectorAll("td");
+		for (let field of fields) {
+			if (field.classList.contains('snake-head')){
+				field.addEventListener('keydown', this.moveSnake);
+			}
+		}
+	},
+	moveSnake: function(event) {
+		event.currentTarget.classList.add("empty");
+		event.currentTarget.classList.remove("snake-head");
+		event.currentTarget.innerText = "";
+		let snakeList = this.getSnakePositions().snakeList;
+		switch (event.key) {
+			case 'ArrowUp':
+				snakeList[0][0] = snakeList[0][0] - 1;
+			case 'ArrowDown':
+				snakeList[0][0] = snakeList[0][0] + 1;
+			case 'Right':
+				snakeList[0][1] = snakeList[0][1] + 1;
+			case 'Left':
+				snakeList[0][1] = snakeList[0][1] - 1;
+		}
+		let fields = document.querySelectorAll("td");
+		for (let field of fields) {
+			//Head
+			if (parseInt(field.getAttribute("row")) === snakeList[0][0] && parseInt(field.getAttribute("col")) === snakeList[0][1]) {
+				field.classList.remove("empty");
+				field.classList.add("snake-head");
+				field.innerText = ":3";
+			}
+		}
 	}
 };
 

@@ -12,7 +12,7 @@ def index():
 
 @app.route('/high_scores')
 def high_scores():
-    scores = data_manager.get_high_scores();
+    scores = data_manager.get_high_scores()
     return render_template('high_scores.html', high_scores=scores)
 
 
