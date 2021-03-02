@@ -43,6 +43,9 @@ const game = {
             'beforeend',
             `<td data-row="${row}" data-col="${col}"></td>`);
     },
+	placeFood: function () {
+
+	}
 };
 
 game.init();
