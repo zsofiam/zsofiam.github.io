@@ -5,18 +5,25 @@ const game = {
         const size = urlParams.get('size');
         let boardHeight = 14;
         let boardWidth = 18;
+        let headRow = 7;
+        let headCol = 6;
         switch (size) {
 			case 'small':
 				boardHeight = 8;
         		boardWidth = 10;
+        		headRow = 3;
+        		headCol = 5;
         		break;
 			case 'large':
 				boardHeight = 20;
         		boardWidth = 26;
+        		headRow = 10;
+        		headCol = 10;
         		break;
 		}
         this.generateBoard(boardHeight, boardWidth);
-        this.putSnakeOnTheBoard(9, 12, 5);
+        this.putSnakeOnTheBoard(headRow, headCol, 5);
+        this.placeFood(boardHeight, boardWidth);
 	},
 
 	generateBoard: function(height, width) {
@@ -52,7 +59,7 @@ const game = {
     addCell: function (rowElement, row, col) {
         rowElement.insertAdjacentHTML(
             'beforeend',
-            `<td row="${row}" col="${col}"></td>`);
+            `<td row="${row}" col="${col}" class="empty"></td>`);
     },
 
     putSnakeOnTheBoard: function(headRow, headCol, length) {
@@ -60,15 +67,42 @@ const game = {
     	for (let i = 0; i < fields.length; i++) {
     		//Head
     		if (fields[i].getAttribute("row") == headRow && fields[i].getAttribute("col") == headCol) {
+    			fields[i].classList.remove("empty");
     			fields[i].classList.add("snake-head");
     			fields[i].innerText = ":3";
     		}
     		//Body
     		else if (fields[i].getAttribute("row") == headRow && (fields[i].getAttribute("col") > headCol-length) && fields[i].getAttribute("col") < headCol) {
-				fields[i].classList.add("snake");
+				fields[i].classList.remove("empty");
+    			fields[i].classList.add("snake");
     		}
     	}
-    }
+    },
+	generateFoodPosition(height, width){
+		let foodRow = Math.floor(Math.random() * height);
+		let foodCol = Math.floor(Math.random() * width);
+		return [foodRow, foodCol]
+	},
+	placeFood: function (height, width) {
+		let fields = document.querySelectorAll("td");
+		let foodNeedsPlace = true;
+		while (foodNeedsPlace) {
+			let foodRow = this.generateFoodPosition(height, width)[0];
+			let foodCol = this.generateFoodPosition(height, width)[1];
+			for (let field of fields) {
+				if (parseInt(field.getAttribute('row')) === foodRow && parseInt(field.getAttribute('col')) === foodCol){
+					if (!field.classList.contains('empty')){
+						break;
+					} else {
+						field.classList.remove("empty");
+						field.classList.add('food');
+						foodNeedsPlace = false;
+					}
+				}
+			}
+		}
+
+	}
 };
 
 game.init();
