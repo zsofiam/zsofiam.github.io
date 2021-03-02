@@ -23,6 +23,7 @@ const game = {
 		}
         this.generateBoard(boardHeight, boardWidth);
         this.putSnakeOnTheBoard(headRow, headCol, 5);
+        this.placeFood(boardHeight, boardWidth);
 	},
 
 	generateBoard: function(height, width) {
@@ -75,8 +76,23 @@ const game = {
     		}
     	}
     },
-	placeFood: function () {
-		pass
+	generateFoodPosition(height, width){
+		let foodRow = Math.floor(Math.random() * height);
+		let foodCol = Math.floor(Math.random() * width);
+		return [foodRow, foodCol]
+	},
+	placeFood: function (height, width) {
+		let foodRow = this.generateFoodPosition(height, width)[0];
+		let foodCol = this.generateFoodPosition(height, width)[1];
+		let fields = document.querySelectorAll("td");
+		for (let field of fields) {
+			if (field.getAttribute('row') === foodRow && field.getAttribute('col') === foodCol){
+				if (field.classList.contains('snake') || field.classList.contains('snake-head')){
+					foodRow, foodCol = this.generateFoodPosition(height, width)
+				}
+				field.classList.add('food');
+			}
+		}
 	}
 };
 
