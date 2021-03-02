@@ -16,7 +16,7 @@ const game = {
         		break;
 		}
         this.generateBoard(boardHeight, boardWidth);
-        this.putSnakeOnTheBoard(9, 12, 5);
+        this.putSnakeOnTheBoard(7, 6, 5);
 	},
 
 	generateBoard: function(height, width) {
@@ -68,9 +68,9 @@ const game = {
 				fields[i].classList.add("snake");
     		}
     	}
-    }
+    },
 	placeFood: function () {
-
+		pass
 	}
 };
 
