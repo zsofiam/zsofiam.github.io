@@ -25,7 +25,6 @@ const game = {
         this.generateBoard(boardHeight, boardWidth);
         this.putSnakeOnTheBoard(color, headRow, headCol, 5);
         this.placeFood(boardHeight, boardWidth);
-        this.initMove();
 	},
 
 	generateBoard: function(height, width) {
@@ -72,6 +71,7 @@ const game = {
     			fields[i].classList.remove("empty");
     			fields[i].classList.add(color)
     			fields[i].classList.add("snake-head");
+    			fields[i].addEventListener('keydown', this.moveSnake);
     			fields[i].innerText = ":3";
     		}
     		//Body
@@ -121,28 +121,27 @@ const game = {
 		}
 		return {snakeList, length}
 	},
-	initMove: function(){
-		let fields = document.querySelectorAll("td");
-		for (let field of fields) {
-			if (field.classList.contains('snake-head')){
-				field.addEventListener('keydown', this.moveSnake);
-			}
-		}
-	},
 	moveSnake: function(event) {
-		event.currentTarget.classList.add("empty");
-		event.currentTarget.classList.remove("snake-head");
-		event.currentTarget.innerText = "";
+		// event.currentTarget.classList.add("empty");
+		// event.currentTarget.classList.remove("snake-head");
+		// event.currentTarget.innerText = "";
 		let snakeList = this.getSnakePositions().snakeList;
+		console.log(snakeList);
+		console.log(this.getSnakePositions());
 		switch (event.key) {
 			case 'ArrowUp':
+				console.log("up");
 				snakeList[0][0] = snakeList[0][0] - 1;
+				break;
 			case 'ArrowDown':
 				snakeList[0][0] = snakeList[0][0] + 1;
+				break;
 			case 'Right':
 				snakeList[0][1] = snakeList[0][1] + 1;
+				break;
 			case 'Left':
 				snakeList[0][1] = snakeList[0][1] - 1;
+				break;
 		}
 		let fields = document.querySelectorAll("td");
 		for (let field of fields) {
