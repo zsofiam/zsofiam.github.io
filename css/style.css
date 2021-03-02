@@ -37,6 +37,13 @@ tr {
 	text-align: center;
 	color: white;
 }
+.snake-head {
+	background-color: green;
+	color: black;
+}
+.snake {
+	background-color: green;
+}
 .food {
 	background-color: red;
 }
