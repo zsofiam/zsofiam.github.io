@@ -6,6 +6,7 @@ const game = {
         const boardWidth = parseInt(urlParams.get('width'));
 
         this.generateBoard(boardHeight, boardWidth);
+        this.putSnakeOnTheBoard(9, 12, 5);
 	},
 
 	generateBoard: function(height, width) {
@@ -41,8 +42,23 @@ const game = {
     addCell: function (rowElement, row, col) {
         rowElement.insertAdjacentHTML(
             'beforeend',
-            `<td data-row="${row}" data-col="${col}"></td>`);
+            `<td row="${row}" col="${col}"></td>`);
     },
+
+    putSnakeOnTheBoard: function(headRow, headCol, length) {
+    	let fields = document.querySelectorAll("td");
+    	for (let i = 0; i < fields.length; i++) {
+    		//Head
+    		if (fields[i].getAttribute("row") == headRow && fields[i].getAttribute("col") == headCol) {
+    			fields[i].classList.add("snake-head");
+    			fields[i].innerText = ":3";
+    		}
+    		//Body
+    		else if (fields[i].getAttribute("row") == headRow && (fields[i].getAttribute("col") > headCol-length) && fields[i].getAttribute("col") < headCol) {
+				fields[i].classList.add("snake");
+    		}
+    	}
+    }
 };
 
 game.init();
