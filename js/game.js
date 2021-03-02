@@ -14,9 +14,9 @@ const game = {
 		gameField = this.addTable(containerDiv);
 
 		let cellIndex = 0;
-		for (let row = 0; row < width; row++) {
+		for (let row = 0; row < height; row++) {
 			const rowElement = this.addRow(gameField);
-			for (let col = 0; col < height; col++) {
+			for (let col = 0; col < width; col++) {
 				this.addCell(rowElement, row, col);
                 cellIndex++;
 			}
