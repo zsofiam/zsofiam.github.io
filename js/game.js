@@ -152,7 +152,32 @@ const game = {
 				field.innerText = ":3";
 			}
 		}
-	}
+
+		//Eat food
+		let food = document.querySelector(".food");
+		let foodX = parseInt(food.getAttribute('row'));
+		let foodY = parseInt(food.getAttribute('col'));
+
+		if (foodX == snakeList[0][0] && foodY == snakeList[0][1]) {
+			food.classList.toggle("food");
+			alert("Ass");
+			//Add score
+			//Generate new food
+		}
+	},
+	/*checkForFood: function(snakeX, snakeY) {
+		//Eat food
+		let food = document.querySelector(".food");
+		let foodX = parseInt(food.getAttribute('row'));
+		let foodY = parseInt(food.getAttribute('col'));
+
+		if (foodX == snakeX && foodY == snakeY) {
+			food.classList.toggle("food");
+			alert("Ass");
+			//Add score
+			//Generate new food
+		}
+	},*/
 };
 
 game.init();
