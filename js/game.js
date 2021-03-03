@@ -12,8 +12,6 @@ const game = {
         width = boardWidth;
         let headRow = 7;
         let headCol = 6;
-        // let headRow = 7;
-        // let headCol = 6;
 		snakeList = [[7,6],[7,5],[7,4],[7,3],[7,2]];
         switch (size) {
 			case 'small':
@@ -24,8 +22,6 @@ const game = {
         		headRow = 3;
         		headCol = 5;
         		snakeList = [[3,5],[3,4],[3,3],[3,2],[3,1]];
-        		// headRow = 3;
-        		// headCol = 5;
         		break;
 			case 'large':
 				boardHeight = 20;
@@ -35,8 +31,6 @@ const game = {
         		headRow = 10;
         		headCol = 10;
         		snakeList = [[10,10],[10,9],[10,8],[10,7],[10,6]];
-        		// headRow = 10;
-        		// headCol = 10;
         		break;
 		}
 		const color = urlParams.get('skin');
@@ -132,7 +126,6 @@ const game = {
 				}
 			}
 		}
-
 	},
 	moveSnake: function(event){
 		const queryString = window.location.search;
@@ -140,6 +133,8 @@ const game = {
 		const color = urlParams.get('skin');
 		let fields = document.querySelectorAll("td");
 		switch (event.key) {
+			//snake head coordinates change according to keys
+			// body parts will get the coordinates of the previous body part
 			case 'ArrowUp':
 				for (let i = snakeList.length - 1; i > 0; i--){
 					snakeList[i][0] = snakeList[i - 1][0];
@@ -169,23 +164,18 @@ const game = {
 				snakeList[0][1] = snakeList[0][1] - 1;
 				break;
 		}
-		// for (let field of fields) {
-		// 	// No head, no body part, so change color to empty class
-		// 	if (field.classList.contains('color')){
-		// 		field.classList.remove('color');
-		// 		field.classList.add('empty');
-		// 	}
-		// }
+		for (let field of fields) {
+			// Clear the table before replacing snake - display movement
+			if (field.classList.contains(color)){
+				field.classList.remove(color);
+				field.classList.add('empty');
+			}
+		}
 		let counter = 0;
 		// Go through all of the snake parts (the coordinates)
     	for (let item of snakeList){
 			// check all field if they match with the current snake part
     		for (let i = 0; i < fields.length; i++) {
-    			// No head, no body part, so change color to empty class
-				if (fields[i].classList.contains('color')){
-					fields[i].classList.remove('color');
-					fields[i].classList.add('empty');
-				}
 				//Put Head
 				if (counter === 0 && parseInt(fields[i].getAttribute("row")) === item[0] &&
 					parseInt(fields[i].getAttribute("col")) === item[1]) {
