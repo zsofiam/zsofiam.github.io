@@ -1,5 +1,6 @@
 let height;
 let width;
+let snakeList;
 const game = {
 	init: function() {
 		const queryString = window.location.search;
@@ -13,7 +14,7 @@ const game = {
         let headCol = 6;
         // let headRow = 7;
         // let headCol = 6;
-		let snakeList = [[7,6],[7,5],[7,4],[7,3],[7,2]];
+		snakeList = [[7,6],[7,5],[7,4],[7,3],[7,2]];
         switch (size) {
 			case 'small':
 				boardHeight = 8;
@@ -40,7 +41,7 @@ const game = {
 		}
 		const color = urlParams.get('skin');
         this.generateBoard(boardHeight, boardWidth);
-        this.putSnakeOnTheBoard(color, snakeList, 5);
+        this.putSnakeOnTheBoard(color, snakeList);
         this.placeFood(boardHeight, boardWidth);
         document.addEventListener('keydown', this.moveSnake);
 	},
@@ -81,7 +82,7 @@ const game = {
             `<td row="${row}" col="${col}" class="empty"></td>`);
     },
 
-    putSnakeOnTheBoard: function(color, snakeList, length) {
+    putSnakeOnTheBoard: function(color, snakeList) {
     	let fields = document.querySelectorAll("td");
     	let counter = 0;
     	for (let item of snakeList){
@@ -99,7 +100,10 @@ const game = {
 				else if (parseInt(fields[i].getAttribute("row")) === item[0] &&
 					parseInt(fields[i].getAttribute("col")) === item[1]) {
 					fields[i].classList.remove("empty");
-					fields[i].classList.add(color);
+					fields[i].classList.remove("snake-head");
+					if (!fields[i].classList.contains(color)){
+						fields[i].classList.add(color);
+					}
 				}
 			}
 		}
@@ -135,31 +139,38 @@ const game = {
         const urlParams = new URLSearchParams(queryString);
 		const color = urlParams.get('skin');
 		let fields = document.querySelectorAll("td");
-		let row;
-		let col;
-		let snakeList = [];
-		let length = 0;
-		for (let field of fields){
-			if (field.classList.contains('snake-head')){
-				row = parseInt(field.getAttribute('row'));
-				col = parseInt(field.getAttribute('col'));
-				length = snakeList.push([row, col]);
-			}
-		}
+		let last;
 		switch (event.key) {
 			case 'ArrowUp':
+				for (let i = snakeList.length - 1; i > 0; i--){
+					snakeList[i][0] = snakeList[i - 1][0];
+					snakeList[i][1] = snakeList[i - 1][1];
+				}
 				snakeList[0][0] = snakeList[0][0] - 1;
 				break;
 			case 'ArrowDown':
+				for (let i = snakeList.length - 1; i > 0; i--){
+					snakeList[i][0] = snakeList[i - 1][0];
+					snakeList[i][1] = snakeList[i - 1][1];
+				}
 				snakeList[0][0] = snakeList[0][0] + 1;
 				break;
 			case 'ArrowRight':
+				for (let i = snakeList.length - 1; i > 0; i--){
+					snakeList[i][0] = snakeList[i - 1][0];
+					snakeList[i][1] = snakeList[i - 1][1];
+				}
 				snakeList[0][1] = snakeList[0][1] + 1;
 				break;
 			case 'ArrowLeft':
+				for (let i = snakeList.length - 1; i > 0; i--){
+					snakeList[i][0] = snakeList[i - 1][0];
+					snakeList[i][1] = snakeList[i - 1][1];
+				}
 				snakeList[0][1] = snakeList[0][1] - 1;
 				break;
 		}
+		// this.putSnakeOnTheBoard(color, snakeList);
 		for (let field of fields) {
 			//Head
 			if (field.classList.contains('snake-head')){
@@ -201,6 +212,15 @@ const game = {
 				}
 
 			}
+			// put down first piece of body after moving head
+			// else if (parseInt(field.getAttribute("row")) === snakeList[1][0] && parseInt(field.getAttribute("col")) === snakeList[1][1]) {
+			// 	field.classList.remove("empty");
+			// 	field.classList.remove("snake-head");
+			// 	if (!field.classList.contains(color)){
+			// 		field.classList.add(color);
+			// 	}
+			// 	field.innerText = "";
+			// }
 		}
 
 		//Eat food
