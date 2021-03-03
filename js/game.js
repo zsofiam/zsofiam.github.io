@@ -171,6 +171,8 @@ const game = {
 				field.classList.add('empty');
 			}
 		}
+		let new_snake_row;
+		let new_snake_col;
 		let counter = 0;
 		// Go through all of the snake parts (the coordinates)
 		let outOfRange = true;
@@ -181,15 +183,14 @@ const game = {
 				if (counter === 0 && parseInt(fields[i].getAttribute("row")) === item[0] &&
 					parseInt(fields[i].getAttribute("col")) === item[1]) {
 					outOfRange = false;
-
+					new_snake_row = item[0];
+					new_snake_col = item[1];
 					// if head meets with food
 					if (fields[i].classList.contains("food")){
 						fields[i].classList.remove("food");
 						fields[i].classList.add("snake-head");
 						fields[i].classList.add(color);
 						fields[i].innerText = ":3";
-						head_row = parseInt(fields[i].getAttribute('row'));
-						head_col = parseInt(fields[i].getAttribute('col'));
 						// this.placeFood(width,height)
 						let foodNeedsPlace = true;
 						while (foodNeedsPlace) {
@@ -220,6 +221,10 @@ const game = {
 				//Put Body
 				else if (parseInt(fields[i].getAttribute("row")) === item[0] &&
 					parseInt(fields[i].getAttribute("col")) === item[1]) {
+					//check if snake head hits body
+					if (new_snake_row == item[0] && new_snake_col == item[1]){
+						outOfRange = true;
+					}
 					//check if head meets body
 					fields[i].classList.remove("empty");
 					fields[i].classList.remove("snake-head");
