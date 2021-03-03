@@ -173,18 +173,23 @@ const game = {
 		}
 		let counter = 0;
 		// Go through all of the snake parts (the coordinates)
+		let outOfRange = true;
     	for (let item of snakeList){
 			// check all field if they match with the current snake part
     		for (let i = 0; i < fields.length; i++) {
 				//Put Head
 				if (counter === 0 && parseInt(fields[i].getAttribute("row")) === item[0] &&
 					parseInt(fields[i].getAttribute("col")) === item[1]) {
+					outOfRange = false;
+
 					// if head meets with food
 					if (fields[i].classList.contains("food")){
 						fields[i].classList.remove("food");
 						fields[i].classList.add("snake-head");
 						fields[i].classList.add(color);
 						fields[i].innerText = ":3";
+						head_row = parseInt(fields[i].getAttribute('row'));
+						head_col = parseInt(fields[i].getAttribute('col'));
 						// this.placeFood(width,height)
 						let foodNeedsPlace = true;
 						while (foodNeedsPlace) {
@@ -215,6 +220,7 @@ const game = {
 				//Put Body
 				else if (parseInt(fields[i].getAttribute("row")) === item[0] &&
 					parseInt(fields[i].getAttribute("col")) === item[1]) {
+					//check if head meets body
 					fields[i].classList.remove("empty");
 					fields[i].classList.remove("snake-head");
 					fields[i].innerText = "";
@@ -223,6 +229,9 @@ const game = {
 					}
 				}
 			}
+		}
+		if (outOfRange){
+			alert("You lost!");
 		}
 		//Eat food
 		let food = document.querySelector(".food");
