@@ -1,3 +1,5 @@
+let height;
+let width;
 const game = {
 	init: function() {
 		const queryString = window.location.search;
@@ -5,6 +7,10 @@ const game = {
         const size = urlParams.get('size');
         let boardHeight = 14;
         let boardWidth = 18;
+        height = boardHeight;
+        width = boardWidth;
+        let headRow = 7;
+        let headCol = 6;
         // let headRow = 7;
         // let headCol = 6;
 		let snakeList = [[7,6],[7,5],[7,4],[7,3],[7,2]];
@@ -12,6 +18,10 @@ const game = {
 			case 'small':
 				boardHeight = 8;
         		boardWidth = 10;
+				height = boardHeight;
+				width = boardWidth;
+        		headRow = 3;
+        		headCol = 5;
         		snakeList = [[3,5],[3,4],[3,3],[3,2],[3,1]];
         		// headRow = 3;
         		// headCol = 5;
@@ -19,6 +29,10 @@ const game = {
 			case 'large':
 				boardHeight = 20;
         		boardWidth = 26;
+				height = boardHeight;
+				width = boardWidth;
+        		headRow = 10;
+        		headCol = 10;
         		snakeList = [[10,10],[10,9],[10,8],[10,7],[10,6]];
         		// headRow = 10;
         		// headCol = 10;
@@ -155,13 +169,65 @@ const game = {
 				field.innerText = "";
 			}
 			if (parseInt(field.getAttribute("row")) === snakeList[0][0] && parseInt(field.getAttribute("col")) === snakeList[0][1]) {
-				field.classList.remove("empty");
-				field.classList.add("snake-head");
-				field.classList.add(color);
-				field.innerText = ":3";
+				if (field.classList.contains("empty")){
+					field.classList.remove("empty");
+					field.classList.add("snake-head");
+					field.classList.add(color);
+					field.innerText = ":3";
+				}
+				else if (field.classList.contains("food")){
+					field.classList.remove("food");
+					field.classList.add("snake-head");
+					field.classList.add(color);
+					field.innerText = ":3";
+					// this.placeFood(width,height)
+					let fields = document.querySelectorAll("td");
+					let foodNeedsPlace = true;
+					while (foodNeedsPlace) {
+						let foodRow = Math.floor(Math.random() * height);
+						let foodCol = Math.floor(Math.random() * width);
+						for (let field of fields) {
+							if (parseInt(field.getAttribute('row')) === foodRow && parseInt(field.getAttribute('col')) === foodCol){
+								if (!field.classList.contains('empty')){
+									break;
+								} else {
+									field.classList.remove("empty");
+									field.classList.add('food');
+									foodNeedsPlace = false;
+								}
+							}
+						}
+					}
+				}
+
 			}
 		}
-	}
+
+		//Eat food
+		let food = document.querySelector(".food");
+		let foodX = parseInt(food.getAttribute('row'));
+		let foodY = parseInt(food.getAttribute('col'));
+
+		if (foodX == snakeList[0][0] && foodY == snakeList[0][1]) {
+			food.classList.toggle("food");
+			alert("Ass");
+			//Add score
+			//Generate new food
+		}
+	},
+	/*checkForFood: function(snakeX, snakeY) {
+		//Eat food
+		let food = document.querySelector(".food");
+		let foodX = parseInt(food.getAttribute('row'));
+		let foodY = parseInt(food.getAttribute('col'));
+
+		if (foodX == snakeX && foodY == snakeY) {
+			food.classList.toggle("food");
+			alert("Ass");
+			//Add score
+			//Generate new food
+		}
+	},*/
 };
 
 game.init();
