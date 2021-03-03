@@ -165,7 +165,7 @@ const game = {
 			//Generate new food
 		}
 	},
-	checkForFood: function(snakeX, snakeY) {
+	/*checkForFood: function(snakeX, snakeY) {
 		//Eat food
 		let food = document.querySelector(".food");
 		let foodX = parseInt(food.getAttribute('row'));
@@ -177,7 +177,7 @@ const game = {
 			//Add score
 			//Generate new food
 		}
-	},
+	},*/
 };
 
 game.init();
