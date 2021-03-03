@@ -1,3 +1,5 @@
+let height;
+let width;
 const game = {
 	init: function() {
 		const queryString = window.location.search;
@@ -5,18 +7,24 @@ const game = {
         const size = urlParams.get('size');
         let boardHeight = 14;
         let boardWidth = 18;
+        height = boardHeight;
+        width = boardWidth;
         let headRow = 7;
         let headCol = 6;
         switch (size) {
 			case 'small':
 				boardHeight = 8;
         		boardWidth = 10;
+				height = boardHeight;
+				width = boardWidth;
         		headRow = 3;
         		headCol = 5;
         		break;
 			case 'large':
 				boardHeight = 20;
         		boardWidth = 26;
+				height = boardHeight;
+				width = boardWidth;
         		headRow = 10;
         		headCol = 10;
         		break;
@@ -146,10 +154,37 @@ const game = {
 				field.innerText = "";
 			}
 			if (parseInt(field.getAttribute("row")) === snakeList[0][0] && parseInt(field.getAttribute("col")) === snakeList[0][1]) {
-				field.classList.remove("empty");
-				field.classList.add("snake-head");
-				field.classList.add(color);
-				field.innerText = ":3";
+				if (field.classList.contains("empty")){
+					field.classList.remove("empty");
+					field.classList.add("snake-head");
+					field.classList.add(color);
+					field.innerText = ":3";
+				}
+				else if (field.classList.contains("food")){
+					field.classList.remove("food");
+					field.classList.add("snake-head");
+					field.classList.add(color);
+					field.innerText = ":3";
+					// this.placeFood(width,height)
+					let fields = document.querySelectorAll("td");
+					let foodNeedsPlace = true;
+					while (foodNeedsPlace) {
+						let foodRow = Math.floor(Math.random() * height);
+						let foodCol = Math.floor(Math.random() * width);
+						for (let field of fields) {
+							if (parseInt(field.getAttribute('row')) === foodRow && parseInt(field.getAttribute('col')) === foodCol){
+								if (!field.classList.contains('empty')){
+									break;
+								} else {
+									field.classList.remove("empty");
+									field.classList.add('food');
+									foodNeedsPlace = false;
+								}
+							}
+						}
+					}
+				}
+
 			}
 		}
 
