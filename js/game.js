@@ -1,5 +1,6 @@
 let height;
 let width;
+let snakeList;
 const game = {
 	init: function() {
 		const queryString = window.location.search;
@@ -11,6 +12,7 @@ const game = {
         width = boardWidth;
         let headRow = 7;
         let headCol = 6;
+		snakeList = [[7,6],[7,5],[7,4],[7,3],[7,2]];
         switch (size) {
 			case 'small':
 				boardHeight = 8;
@@ -19,6 +21,7 @@ const game = {
 				width = boardWidth;
         		headRow = 3;
         		headCol = 5;
+        		snakeList = [[3,5],[3,4],[3,3],[3,2],[3,1]];
         		break;
 			case 'large':
 				boardHeight = 20;
@@ -27,11 +30,12 @@ const game = {
 				width = boardWidth;
         		headRow = 10;
         		headCol = 10;
+        		snakeList = [[10,10],[10,9],[10,8],[10,7],[10,6]];
         		break;
 		}
 		const color = urlParams.get('skin');
         this.generateBoard(boardHeight, boardWidth);
-        this.putSnakeOnTheBoard(color, headRow, headCol, 5);
+        this.putSnakeOnTheBoard(color, snakeList);
         this.placeFood(boardHeight, boardWidth);
         document.addEventListener('keydown', this.moveSnake);
 	},
@@ -39,7 +43,7 @@ const game = {
 	generateBoard: function(height, width) {
 		let containerDiv = document.querySelector(".game-field");
 
-		gameField = this.addTable(containerDiv);
+		let gameField = this.addTable(containerDiv);
 
 		let cellIndex = 0;
 		for (let row = 0; row < height; row++) {
@@ -72,22 +76,32 @@ const game = {
             `<td row="${row}" col="${col}" class="empty"></td>`);
     },
 
-    putSnakeOnTheBoard: function(color, headRow, headCol, length) {
+    putSnakeOnTheBoard: function(color, snakeList) {
     	let fields = document.querySelectorAll("td");
-    	for (let i = 0; i < fields.length; i++) {
+    	let counter = 0;
+    	for (let item of snakeList){
+    		for (let i = 0; i < fields.length; i++) {
     		//Head
-    		if (fields[i].getAttribute("row") == headRow && fields[i].getAttribute("col") == headCol) {
-    			fields[i].classList.remove("empty");
-    			fields[i].classList.add(color)
-    			fields[i].classList.add("snake-head");
-    			fields[i].innerText = ":3";
-    		}
-    		//Body
-    		else if (fields[i].getAttribute("row") == headRow && (fields[i].getAttribute("col") > headCol-length) && fields[i].getAttribute("col") < headCol) {
-				fields[i].classList.remove("empty");
-    			fields[i].classList.add(color);
-    		}
-    	}
+				if (counter === 0 && parseInt(fields[i].getAttribute("row")) === item[0] &&
+					parseInt(fields[i].getAttribute("col")) === item[1]) {
+					fields[i].classList.remove("empty");
+					fields[i].classList.add(color)
+					fields[i].classList.add("snake-head");
+					fields[i].innerText = ":3";
+					counter++;
+				}
+				//Body
+				else if (parseInt(fields[i].getAttribute("row")) === item[0] &&
+					parseInt(fields[i].getAttribute("col")) === item[1]) {
+					fields[i].classList.remove("empty");
+					fields[i].classList.remove("snake-head");
+					if (!fields[i].classList.contains(color)){
+						fields[i].classList.add(color);
+					}
+				}
+			}
+		}
+
     },
 	generateFoodPosition(height, width){
 		let foodRow = Math.floor(Math.random() * height);
@@ -112,107 +126,116 @@ const game = {
 				}
 			}
 		}
-
 	},
 	moveSnake: function(event){
 		const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
 		const color = urlParams.get('skin');
 		let fields = document.querySelectorAll("td");
-		let row;
-		let col;
-		let snakeList = [];
-		let length = 0;
-		for (let field of fields){
-			if (field.classList.contains('snake-head')){
-				row = parseInt(field.getAttribute('row'));
-				col = parseInt(field.getAttribute('col'));
-				length = snakeList.push([row, col]);
-			}
-		}
 		switch (event.key) {
+			//snake head coordinates change according to keys
+			// body parts will get the coordinates of the previous body part
 			case 'ArrowUp':
-				console.log("up");
+				for (let i = snakeList.length - 1; i > 0; i--){
+					snakeList[i][0] = snakeList[i - 1][0];
+					snakeList[i][1] = snakeList[i - 1][1];
+				}
 				snakeList[0][0] = snakeList[0][0] - 1;
 				break;
 			case 'ArrowDown':
+				for (let i = snakeList.length - 1; i > 0; i--){
+					snakeList[i][0] = snakeList[i - 1][0];
+					snakeList[i][1] = snakeList[i - 1][1];
+				}
 				snakeList[0][0] = snakeList[0][0] + 1;
 				break;
 			case 'ArrowRight':
+				for (let i = snakeList.length - 1; i > 0; i--){
+					snakeList[i][0] = snakeList[i - 1][0];
+					snakeList[i][1] = snakeList[i - 1][1];
+				}
 				snakeList[0][1] = snakeList[0][1] + 1;
 				break;
 			case 'ArrowLeft':
+				for (let i = snakeList.length - 1; i > 0; i--){
+					snakeList[i][0] = snakeList[i - 1][0];
+					snakeList[i][1] = snakeList[i - 1][1];
+				}
 				snakeList[0][1] = snakeList[0][1] - 1;
 				break;
 		}
 		for (let field of fields) {
-			//Head
-			if (field.classList.contains('snake-head')){
-				field.classList.add("empty");
-				field.classList.remove("snake-head");
+			// Clear the table before replacing snake - display movement
+			if (field.classList.contains(color)){
 				field.classList.remove(color);
-				field.innerText = "";
+				field.classList.add('empty');
 			}
-			if (parseInt(field.getAttribute("row")) === snakeList[0][0] && parseInt(field.getAttribute("col")) === snakeList[0][1]) {
-				if (field.classList.contains("empty")){
-					field.classList.remove("empty");
-					field.classList.add("snake-head");
-					field.classList.add(color);
-					field.innerText = ":3";
-				}
-				else if (field.classList.contains("food")){
-					field.classList.remove("food");
-					field.classList.add("snake-head");
-					field.classList.add(color);
-					field.innerText = ":3";
-					// this.placeFood(width,height)
-					let fields = document.querySelectorAll("td");
-					let foodNeedsPlace = true;
-					while (foodNeedsPlace) {
-						let foodRow = Math.floor(Math.random() * height);
-						let foodCol = Math.floor(Math.random() * width);
-						for (let field of fields) {
-							if (parseInt(field.getAttribute('row')) === foodRow && parseInt(field.getAttribute('col')) === foodCol){
-								if (!field.classList.contains('empty')){
-									break;
-								} else {
-									field.classList.remove("empty");
-									field.classList.add('food');
-									foodNeedsPlace = false;
+		}
+		let counter = 0;
+		// Go through all of the snake parts (the coordinates)
+    	for (let item of snakeList){
+			// check all field if they match with the current snake part
+    		for (let i = 0; i < fields.length; i++) {
+				//Put Head
+				if (counter === 0 && parseInt(fields[i].getAttribute("row")) === item[0] &&
+					parseInt(fields[i].getAttribute("col")) === item[1]) {
+					// if head meets with food
+					if (fields[i].classList.contains("food")){
+						fields[i].classList.remove("food");
+						fields[i].classList.add("snake-head");
+						fields[i].classList.add(color);
+						fields[i].innerText = ":3";
+						// this.placeFood(width,height)
+						let foodNeedsPlace = true;
+						while (foodNeedsPlace) {
+							let foodRow = Math.floor(Math.random() * height);
+							let foodCol = Math.floor(Math.random() * width);
+							for (let field of fields) {
+								if (parseInt(field.getAttribute('row')) === foodRow && parseInt(field.getAttribute('col')) === foodCol){
+									if (!field.classList.contains('empty')){
+										break;
+									} else {
+										field.classList.remove("empty");
+										field.classList.add('food');
+										foodNeedsPlace = false;
+									}
 								}
 							}
 						}
+						counter++;
+					} else {
+						fields[i].classList.remove("empty");
+						fields[i].classList.add(color)
+						fields[i].classList.add("snake-head");
+						fields[i].innerText = ":3";
+						counter++;
+					}
+
+				}
+				//Put Body
+				else if (parseInt(fields[i].getAttribute("row")) === item[0] &&
+					parseInt(fields[i].getAttribute("col")) === item[1]) {
+					fields[i].classList.remove("empty");
+					fields[i].classList.remove("snake-head");
+					fields[i].innerText = "";
+					if (!fields[i].classList.contains(color)){
+						fields[i].classList.add(color);
 					}
 				}
-
 			}
 		}
-
 		//Eat food
 		let food = document.querySelector(".food");
 		let foodX = parseInt(food.getAttribute('row'));
 		let foodY = parseInt(food.getAttribute('col'));
 
-		if (foodX == snakeList[0][0] && foodY == snakeList[0][1]) {
+		if (foodX === snakeList[0][0] && foodY === snakeList[0][1]) {
 			food.classList.toggle("food");
 			alert("Ass");
 			//Add score
 			//Generate new food
 		}
-	},
-	/*checkForFood: function(snakeX, snakeY) {
-		//Eat food
-		let food = document.querySelector(".food");
-		let foodX = parseInt(food.getAttribute('row'));
-		let foodY = parseInt(food.getAttribute('col'));
-
-		if (foodX == snakeX && foodY == snakeY) {
-			food.classList.toggle("food");
-			alert("Ass");
-			//Add score
-			//Generate new food
-		}
-	},*/
+	}
 };
 
 game.init();
