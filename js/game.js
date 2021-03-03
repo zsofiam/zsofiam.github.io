@@ -5,25 +5,28 @@ const game = {
         const size = urlParams.get('size');
         let boardHeight = 14;
         let boardWidth = 18;
-        let headRow = 7;
-        let headCol = 6;
+        // let headRow = 7;
+        // let headCol = 6;
+		let snakeList = [[7,6],[7,5],[7,4],[7,3],[7,2]];
         switch (size) {
 			case 'small':
 				boardHeight = 8;
         		boardWidth = 10;
-        		headRow = 3;
-        		headCol = 5;
+        		snakeList = [[3,5],[3,4],[3,3],[3,2],[3,1]];
+        		// headRow = 3;
+        		// headCol = 5;
         		break;
 			case 'large':
 				boardHeight = 20;
         		boardWidth = 26;
-        		headRow = 10;
-        		headCol = 10;
+        		snakeList = [[10,10],[10,9],[10,8],[10,7],[10,6]];
+        		// headRow = 10;
+        		// headCol = 10;
         		break;
 		}
 		const color = urlParams.get('skin');
         this.generateBoard(boardHeight, boardWidth);
-        this.putSnakeOnTheBoard(color, headRow, headCol, 5);
+        this.putSnakeOnTheBoard(color, snakeList, 5);
         this.placeFood(boardHeight, boardWidth);
         document.addEventListener('keydown', this.moveSnake);
 	},
@@ -31,7 +34,7 @@ const game = {
 	generateBoard: function(height, width) {
 		let containerDiv = document.querySelector(".game-field");
 
-		gameField = this.addTable(containerDiv);
+		let gameField = this.addTable(containerDiv);
 
 		let cellIndex = 0;
 		for (let row = 0; row < height; row++) {
@@ -64,22 +67,29 @@ const game = {
             `<td row="${row}" col="${col}" class="empty"></td>`);
     },
 
-    putSnakeOnTheBoard: function(color, headRow, headCol, length) {
+    putSnakeOnTheBoard: function(color, snakeList, length) {
     	let fields = document.querySelectorAll("td");
-    	for (let i = 0; i < fields.length; i++) {
+    	let counter = 0;
+    	for (let item of snakeList){
+    		for (let i = 0; i < fields.length; i++) {
     		//Head
-    		if (fields[i].getAttribute("row") == headRow && fields[i].getAttribute("col") == headCol) {
-    			fields[i].classList.remove("empty");
-    			fields[i].classList.add(color)
-    			fields[i].classList.add("snake-head");
-    			fields[i].innerText = ":3";
-    		}
-    		//Body
-    		else if (fields[i].getAttribute("row") == headRow && (fields[i].getAttribute("col") > headCol-length) && fields[i].getAttribute("col") < headCol) {
-				fields[i].classList.remove("empty");
-    			fields[i].classList.add(color);
-    		}
-    	}
+				if (counter === 0 && parseInt(fields[i].getAttribute("row")) === item[0] &&
+					parseInt(fields[i].getAttribute("col")) === item[1]) {
+					fields[i].classList.remove("empty");
+					fields[i].classList.add(color)
+					fields[i].classList.add("snake-head");
+					fields[i].innerText = ":3";
+					counter++;
+				}
+				//Body
+				else if (parseInt(fields[i].getAttribute("row")) === item[0] &&
+					parseInt(fields[i].getAttribute("col")) === item[1]) {
+					fields[i].classList.remove("empty");
+					fields[i].classList.add(color);
+				}
+			}
+		}
+
     },
 	generateFoodPosition(height, width){
 		let foodRow = Math.floor(Math.random() * height);
