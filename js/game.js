@@ -133,6 +133,9 @@ const game = {
         const urlParams = new URLSearchParams(queryString);
 		const color = urlParams.get('skin');
 		let fields = document.querySelectorAll("td");
+		let last_index = snakeList.length - 1;
+		let last_body_row = snakeList[last_index][0];
+		let last_body_col = snakeList[last_index][1];
 		switch (event.key) {
 			//snake head coordinates change according to keys
 			// body parts will get the coordinates of the previous body part
@@ -185,16 +188,17 @@ const game = {
 			// check all field if they match with the current snake part
     		for (let i = 0; i < fields.length; i++) {
 				//Put Head
+				// if hit wall
 				if (counter === 0) {
 					if (new_snake_row < 0 || new_snake_row > height - 1 ||
 						new_snake_col < 0 || new_snake_col > width - 1){
 					outOfRange = true;
 					break;
 					}
+					// if did not hit wall
 					else if (parseInt(fields[i].getAttribute("row")) === item[0] &&
 					parseInt(fields[i].getAttribute("col")) === item[1]){
-						// outOfRange = false;
-						// if head meets with food
+						// if ate food
 						if (fields[i].classList.contains("food")){
 							fields[i].classList.remove("food");
 							fields[i].classList.add("snake-head");
@@ -218,6 +222,8 @@ const game = {
 								}
 							}
 							counter++;
+							// after eating the snake grows
+							snakeList.push([last_body_row, last_body_col]);
 						//	head does not meet with food
 						} else {
 							fields[i].classList.remove("empty");
