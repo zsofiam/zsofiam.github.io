@@ -1,6 +1,7 @@
 let height;
 let width;
 let snakeList;
+let outOfRange;
 const game = {
 	init: function() {
 		const queryString = window.location.search;
@@ -175,54 +176,63 @@ const game = {
 		let new_snake_col;
 		let counter = 0;
 		// Go through all of the snake parts (the coordinates)
-		let outOfRange = true;
+		outOfRange = false;
     	for (let item of snakeList){
+    		if (counter ===0){
+    			new_snake_row = item[0];
+    			new_snake_col = item[1];
+			}
 			// check all field if they match with the current snake part
     		for (let i = 0; i < fields.length; i++) {
 				//Put Head
-				if (counter === 0 && parseInt(fields[i].getAttribute("row")) === item[0] &&
-					parseInt(fields[i].getAttribute("col")) === item[1]) {
-					outOfRange = false;
-					new_snake_row = item[0];
-					new_snake_col = item[1];
-					// if head meets with food
-					if (fields[i].classList.contains("food")){
-						fields[i].classList.remove("food");
-						fields[i].classList.add("snake-head");
-						fields[i].classList.add(color);
-						fields[i].innerText = ":3";
-						// this.placeFood(width,height)
-						let foodNeedsPlace = true;
-						while (foodNeedsPlace) {
-							let foodRow = Math.floor(Math.random() * height);
-							let foodCol = Math.floor(Math.random() * width);
-							for (let field of fields) {
-								if (parseInt(field.getAttribute('row')) === foodRow && parseInt(field.getAttribute('col')) === foodCol){
-									if (!field.classList.contains('empty')){
-										break;
-									} else {
-										field.classList.remove("empty");
-										field.classList.add('food');
-										foodNeedsPlace = false;
+				if (counter === 0) {
+					if (new_snake_row < 0 || new_snake_row > height - 1 ||
+						new_snake_col < 0 || new_snake_col > width - 1){
+					outOfRange = true;
+					break;
+					}
+					else if (parseInt(fields[i].getAttribute("row")) === item[0] &&
+					parseInt(fields[i].getAttribute("col")) === item[1]){
+						// outOfRange = false;
+						// if head meets with food
+						if (fields[i].classList.contains("food")){
+							fields[i].classList.remove("food");
+							fields[i].classList.add("snake-head");
+							fields[i].classList.add(color);
+							fields[i].innerText = ":3";
+							// this.placeFood(width,height)
+							let foodNeedsPlace = true;
+							while (foodNeedsPlace) {
+								let foodRow = Math.floor(Math.random() * height);
+								let foodCol = Math.floor(Math.random() * width);
+								for (let field of fields) {
+									if (parseInt(field.getAttribute('row')) === foodRow && parseInt(field.getAttribute('col')) === foodCol){
+										if (!field.classList.contains('empty')){
+											break;
+										} else {
+											field.classList.remove("empty");
+											field.classList.add('food');
+											foodNeedsPlace = false;
+										}
 									}
 								}
 							}
+							counter++;
+						//	head does not meet with food
+						} else {
+							fields[i].classList.remove("empty");
+							fields[i].classList.add(color)
+							fields[i].classList.add("snake-head");
+							fields[i].innerText = ":3";
+							counter++;
 						}
-						counter++;
-					} else {
-						fields[i].classList.remove("empty");
-						fields[i].classList.add(color)
-						fields[i].classList.add("snake-head");
-						fields[i].innerText = ":3";
-						counter++;
 					}
-
 				}
 				//Put Body
 				else if (parseInt(fields[i].getAttribute("row")) === item[0] &&
 					parseInt(fields[i].getAttribute("col")) === item[1]) {
 					//check if snake head hits body
-					if (new_snake_row == item[0] && new_snake_col == item[1]){
+					if (new_snake_row === item[0] && new_snake_col === item[1]){
 						outOfRange = true;
 					}
 					//check if head meets body
@@ -234,9 +244,10 @@ const game = {
 					}
 				}
 			}
-		}
-		if (outOfRange){
-			alert("You lost!");
+    		if (outOfRange){
+				alert("You lost!");
+				break;
+			}
 		}
 		//Eat food
 		let food = document.querySelector(".food");
