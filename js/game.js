@@ -124,7 +124,6 @@ const game = {
 		}
 		switch (event.key) {
 			case 'ArrowUp':
-				console.log("up");
 				snakeList[0][0] = snakeList[0][0] - 1;
 				break;
 			case 'ArrowDown':
