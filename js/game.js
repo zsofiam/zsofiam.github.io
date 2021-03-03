@@ -25,6 +25,7 @@ const game = {
         this.generateBoard(boardHeight, boardWidth);
         this.putSnakeOnTheBoard(color, headRow, headCol, 5);
         this.placeFood(boardHeight, boardWidth);
+        document.addEventListener('keydown', this.moveSnake);
 	},
 
 	generateBoard: function(height, width) {
@@ -104,6 +105,53 @@ const game = {
 			}
 		}
 
+	},
+	moveSnake: function(event){
+		const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+		const color = urlParams.get('skin');
+		let fields = document.querySelectorAll("td");
+		let row;
+		let col;
+		let snakeList = [];
+		let length = 0;
+		for (let field of fields){
+			if (field.classList.contains('snake-head')){
+				row = parseInt(field.getAttribute('row'));
+				col = parseInt(field.getAttribute('col'));
+				length = snakeList.push([row, col]);
+			}
+		}
+		switch (event.key) {
+			case 'ArrowUp':
+				console.log("up");
+				snakeList[0][0] = snakeList[0][0] - 1;
+				break;
+			case 'ArrowDown':
+				snakeList[0][0] = snakeList[0][0] + 1;
+				break;
+			case 'ArrowRight':
+				snakeList[0][1] = snakeList[0][1] + 1;
+				break;
+			case 'ArrowLeft':
+				snakeList[0][1] = snakeList[0][1] - 1;
+				break;
+		}
+		for (let field of fields) {
+			//Head
+			if (field.classList.contains('snake-head')){
+				field.classList.add("empty");
+				field.classList.remove("snake-head");
+				field.classList.remove(color);
+				field.innerText = "";
+			}
+			if (parseInt(field.getAttribute("row")) === snakeList[0][0] && parseInt(field.getAttribute("col")) === snakeList[0][1]) {
+				field.classList.remove("empty");
+				field.classList.add("snake-head");
+				field.classList.add(color);
+				field.innerText = ":3";
+			}
+		}
 	}
 };
 
