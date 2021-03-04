@@ -330,6 +330,12 @@ const game = {
 			document.cookie = "highscore=" + currentScore;
 			document.cookie = "championname=" + playerName;
 		}
+		game.displayHighScore();
+	},
+	displayHighScore: function (){
+		let champion = this.getCookie("championname");
+		let highscore = this.getCookie("highscore");
+		alert(`High Score: ${highscore}\nAchieved By: ${champion}`);
 	}
 };
 
