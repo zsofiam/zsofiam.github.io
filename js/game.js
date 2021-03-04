@@ -2,6 +2,7 @@ let height;
 let width;
 let snakeList;
 let outOfRange;
+let currentScore;
 let gameDisabled = false;
 let direction = 'right';
 let foodCount = 10;
@@ -42,10 +43,14 @@ const game = {
         this.generateBoard(boardHeight, boardWidth);
         this.putSnakeOnTheBoard(color, snakeList);
         this.placeFood(boardHeight, boardWidth);
-        document.addEventListener('keydown', this.changeDirection);
-        window.setInterval(this.moveSnake,300);
+		document.addEventListener('keydown', this.changeDirection);
+		window.setInterval(this.moveSnake,300);
+		currentScore = 0;
+		scoreField = document.querySelector("#current-score");
+		scoreField.setAttribute("score", currentScore);
+		console.log(scoreField.getAttribute("score"));
+		scoreField.innerHTML = scoreField.getAttribute("score");
 	},
-
 	generateBoard: function(height, width) {
 		let containerDiv = document.querySelector(".game-field");
 
@@ -152,48 +157,47 @@ const game = {
 				break;
 		}
 	},
-	moveSnake: function(event){
-
+	moveSnake: function(event) {
 		if (gameDisabled) return;
 		const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
+		const urlParams = new URLSearchParams(queryString);
 		const color = urlParams.get('skin');
 		let fields = document.querySelectorAll("td");
 		let last_index = snakeList.length - 1;
 		let last_body_row = snakeList[last_index][0];
 		let last_body_col = snakeList[last_index][1];
 		// moving
-		if (direction==='up'){
-			for (let i = snakeList.length - 1; i > 0; i--){
-					snakeList[i][0] = snakeList[i - 1][0];
-					snakeList[i][1] = snakeList[i - 1][1];
-				}
-				snakeList[0][0] = snakeList[0][0] - 1;
+		if (direction === 'up') {
+			for (let i = snakeList.length - 1; i > 0; i--) {
+				snakeList[i][0] = snakeList[i - 1][0];
+				snakeList[i][1] = snakeList[i - 1][1];
+			}
+			snakeList[0][0] = snakeList[0][0] - 1;
 		}
-		if (direction==='down'){
-			for (let i = snakeList.length - 1; i > 0; i--){
-					snakeList[i][0] = snakeList[i - 1][0];
-					snakeList[i][1] = snakeList[i - 1][1];
-				}
-				snakeList[0][0] = snakeList[0][0] + 1;
+		if (direction === 'down') {
+			for (let i = snakeList.length - 1; i > 0; i--) {
+				snakeList[i][0] = snakeList[i - 1][0];
+				snakeList[i][1] = snakeList[i - 1][1];
+			}
+			snakeList[0][0] = snakeList[0][0] + 1;
 		}
-		if (direction==='right'){
-			for (let i = snakeList.length - 1; i > 0; i--){
-					snakeList[i][0] = snakeList[i - 1][0];
-					snakeList[i][1] = snakeList[i - 1][1];
-				}
-				snakeList[0][1] = snakeList[0][1] + 1;
+		if (direction === 'right') {
+			for (let i = snakeList.length - 1; i > 0; i--) {
+				snakeList[i][0] = snakeList[i - 1][0];
+				snakeList[i][1] = snakeList[i - 1][1];
+			}
+			snakeList[0][1] = snakeList[0][1] + 1;
 		}
-		if (direction==='left'){
-			for (let i = snakeList.length - 1; i > 0; i--){
-					snakeList[i][0] = snakeList[i - 1][0];
-					snakeList[i][1] = snakeList[i - 1][1];
-				}
-				snakeList[0][1] = snakeList[0][1] - 1;
+		if (direction === 'left') {
+			for (let i = snakeList.length - 1; i > 0; i--) {
+				snakeList[i][0] = snakeList[i - 1][0];
+				snakeList[i][1] = snakeList[i - 1][1];
+			}
+			snakeList[0][1] = snakeList[0][1] - 1;
 		}
 		for (let field of fields) {
 			// Clear the table before replacing snake - display movement
-			if (field.classList.contains(color)){
+			if (field.classList.contains(color)) {
 				field.classList.remove(color);
 				field.classList.add('empty');
 			}
@@ -203,26 +207,30 @@ const game = {
 		let counter = 0;
 		// Go through all of the snake parts (the coordinates)
 		outOfRange = false;
-    	for (let item of snakeList){
-    		if (counter ===0){
-    			new_snake_row = item[0];
-    			new_snake_col = item[1];
+		for (let item of snakeList) {
+			if (counter === 0) {
+				new_snake_row = item[0];
+				new_snake_col = item[1];
 			}
 			// check all field if they match with the current snake part
-    		for (let i = 0; i < fields.length; i++) {
+			for (let i = 0; i < fields.length; i++) {
 				//Put Head
 				// if hit wall
 				if (counter === 0) {
 					if (new_snake_row < 0 || new_snake_row > height - 1 ||
-						new_snake_col < 0 || new_snake_col > width - 1){
-					outOfRange = true;
-					break;
+						new_snake_col < 0 || new_snake_col > width - 1) {
+						outOfRange = true;
+						break;
 					}
 					// if did not hit wall
 					else if (parseInt(fields[i].getAttribute("row")) === item[0] &&
-					parseInt(fields[i].getAttribute("col")) === item[1]){
+						parseInt(fields[i].getAttribute("col")) === item[1]) {
 						// if ate food
-						if (fields[i].classList.contains("food")){
+						if (fields[i].classList.contains("food")) {
+							//increase score by 10
+							currentScore = parseInt(scoreField.getAttribute("score")) + 10;
+							scoreField.setAttribute("score", currentScore);
+							scoreField.innerHTML = scoreField.getAttribute("score");
 							fields[i].classList.remove("food");
 							fields[i].classList.add("snake-head");
 							fields[i].classList.add(color);
@@ -240,8 +248,8 @@ const game = {
 								let foodRow = Math.floor(Math.random() * height);
 								let foodCol = Math.floor(Math.random() * width);
 								for (let field of fields) {
-									if (parseInt(field.getAttribute('row')) === foodRow && parseInt(field.getAttribute('col')) === foodCol){
-										if (!field.classList.contains('empty')){
+									if (parseInt(field.getAttribute('row')) === foodRow && parseInt(field.getAttribute('col')) === foodCol) {
+										if (!field.classList.contains('empty')) {
 											break;
 										} else {
 											field.classList.remove("empty");
@@ -254,7 +262,7 @@ const game = {
 							counter++;
 							// after eating the snake grows
 							snakeList.push([last_body_row, last_body_col]);
-						//	head does not meet with food
+							//	head does not meet with food
 						} else {
 							fields[i].classList.remove("empty");
 							fields[i].classList.add(color)
@@ -268,19 +276,19 @@ const game = {
 				else if (parseInt(fields[i].getAttribute("row")) === item[0] &&
 					parseInt(fields[i].getAttribute("col")) === item[1]) {
 					//check if snake head hits body
-					if (new_snake_row === item[0] && new_snake_col === item[1]){
+					if (new_snake_row === item[0] && new_snake_col === item[1]) {
 						outOfRange = true;
 					}
 					//check if head meets body
 					fields[i].classList.remove("empty");
 					fields[i].classList.remove("snake-head");
 					fields[i].innerText = "";
-					if (!fields[i].classList.contains(color)){
+					if (!fields[i].classList.contains(color)) {
 						fields[i].classList.add(color);
 					}
 				}
 			}
-    		if (outOfRange){
+			if (outOfRange) {
 				alert("You lost!");
 				document.querySelector(".snake-head").innerText = ":(";
 				gameDisabled = true;
