@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>High Scores</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+<body>
+<table>
+<tr>
+    <th>Name</th>
+    <th>Score</th>
+    <th>Level</th>
+</tr>
+    {% for high_score in high_scores %}
+        <tr>
+        <td>{{ high_score["name"] }}</td>
+        <td>{{ high_score["score"] }}</td>
+        <td>{{ high_score["level"] }}</td>
+        </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

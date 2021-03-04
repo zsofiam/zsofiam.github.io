@@ -1,63 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Egy szuper oldal</title>
+	<title>Snake Game</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
-
 <body>
-
-    <ul>
-
-        <li>
-            <a href="/">Home</a>
-        </li>
-        <li>
-            <a href="/pages/products.html">Products</a>
-        </li>
-        <li>
-            <a href="/pages/orders.html">Orders</a>
-        </li>
-        <li>
-            <a href="about.html">About</a>
-        </li>
-       
-
-    </ul>
-
-    <h1>Fantastic Burger</h1>
-    <ul>
-        <li>Meat lover
-            <ul>
-
-                <li>Beef</li>
-                <li>Pork</li>
-                <li>Turkey</li>
-            </ul>
-        </li>
-        <li>Vegetarian</li>
-        <li>Piedone</li>
-        
-    </ul>
-    <h2>Step of order</h2>
-    <ol>
-        <li>Choose a burger</li>
-        <li>Buy it</li>
-        <li>Give your address</li>
-        <li>Eat it</li>
-    </ol>
-
-
-    <a href="https://www.tasteofhome.com/recipes/barbecued-burgers/">Barbecued Burgers</a>
-    
-    <a href="pages/orders.html">Orders</a>
-    <a target="_blank" href="https://www.tasteofhome.com/recipes/barbecued-burgers/">
-    
-        <img width="56px" src="img/burger.jpg" alt="tasty burger">
-    </a>
-    
+	<div class="center border">
+		<h1>Snake Game</h1>
+<!--		image? -->
+		<form method="GET", action="game.html">
+			<h2>Customize your snake!</h2>
+			<label for="player-name">Name:</label><br>
+			<input type="text" name="player-name" id="player-name"required><br><br>
+			<label for="skin">Skin color:</label><br>
+			<select name="skin" id="skin">
+				<option value="green">Green</option>
+				<option value="blue">Blue</option>
+				<option value="purple">Purple</option>
+                <option value="yellow">Yellow</option>
+			</select>
+			<h2>Customize the board!</h2>
+			<label for="size">Size:</label><br>
+			<select name="size" id="size" size="3">
+				<option value="small">Small (8x10)</option>
+				<option value="medium" selected>Medium (14x18)</option>
+				<option value="large">Large (20x26)</option>
+			</select><br><br>
+			<input type="submit" name="submit" value="Play!">
+		</form>
+	</div>
 </body>
-
 </html>
