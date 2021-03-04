@@ -2,6 +2,7 @@ let height;
 let width;
 let snakeList;
 let outOfRange;
+let currentScore;
 const game = {
 	init: function() {
 		const queryString = window.location.search;
@@ -39,6 +40,11 @@ const game = {
         this.putSnakeOnTheBoard(color, snakeList);
         this.placeFood(boardHeight, boardWidth);
         document.addEventListener('keydown', this.moveSnake);
+		currentScore = 12;
+		scoreField = document.querySelector("#current-score");
+		scoreField.setAttribute("score", currentScore);
+		console.log(scoreField.getAttribute("score"));
+		scoreField.innerHTML = scoreField.getAttribute("score");
 	},
 
 	generateBoard: function(height, width) {
