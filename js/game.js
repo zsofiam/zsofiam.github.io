@@ -7,11 +7,13 @@ let gameDisabled = false;
 let direction = 'right';
 let foodCount = 10;
 let won = false;
+let playerName;
 const game = {
 	init: function() {
 		const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const size = urlParams.get('size');
+		playerName = urlParams.get('player-name');
         let boardHeight = 14;
         let boardWidth = 18;
         height = boardHeight;
@@ -289,14 +291,14 @@ const game = {
 				}
 			}
 			if (outOfRange) {
-				alert("You lost!");
 				document.querySelector(".snake-head").innerText = ":(";
 				gameDisabled = true;
+				alert(`You lost, ${playerName}. Final score: ${currentScore}`);
 				break;
 			}
 		}
     	if (won){
-    		alert("You won!");
+    		alert(`You won, ${playerName}!!!! Final score: ${currentScore}`);
     		gameDisabled = true;
 		}
 	}
