@@ -10,19 +10,15 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/game')
+def play_game():
+    return render_template('game.html')
+
+
 @app.route('/high_scores')
 def high_scores():
     scores = data_manager.get_high_scores()
     return render_template('high_scores.html', high_scores=scores)
-
-
-@app.route('/applicant/<code>', methods=['GET', 'POST'])
-def applicant_details(code):
-    if request.method == 'POST':
-        new_phone = request.form["new-phone"]
-        data_manager.update_applicant_phone(new_phone, code)
-    applicant_details = data_manager.get_applicant_by_code(code)
-    return render_template('applicant.html', applicant = applicant_details)
 
 
 @app.route('/save_high_score', methods=['POST'])
