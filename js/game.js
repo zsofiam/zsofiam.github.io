@@ -5,11 +5,13 @@ let outOfRange;
 let currentScore;
 let gameDisabled = false;
 let direction = 'right';
+let playerName;
 const game = {
 	init: function() {
 		const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const size = urlParams.get('size');
+		playerName = urlParams.get('player-name');
         let boardHeight = 14;
         let boardWidth = 18;
         height = boardHeight;
@@ -285,6 +287,7 @@ const game = {
 				alert("You lost!");
 				document.querySelector(".snake-head").innerText = ":(";
 				gameDisabled = true;
+				alert(`Congratulations, ${playerName}! Final score: ${currentScore}`);
 				break;
 			}
 		}
