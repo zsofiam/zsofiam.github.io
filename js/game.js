@@ -2,6 +2,7 @@ let height;
 let width;
 let snakeList;
 let outOfRange;
+let gameDisabled = false;
 const game = {
 	init: function() {
 		const queryString = window.location.search;
@@ -129,6 +130,7 @@ const game = {
 		}
 	},
 	moveSnake: function(event){
+		if (gameDisabled) return;
 		const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
 		const color = urlParams.get('skin');
@@ -252,19 +254,10 @@ const game = {
 			}
     		if (outOfRange){
 				alert("You lost!");
+				document.querySelector(".snake-head").innerText = ":(";
+				gameDisabled = true;
 				break;
 			}
-		}
-		//Eat food
-		let food = document.querySelector(".food");
-		let foodX = parseInt(food.getAttribute('row'));
-		let foodY = parseInt(food.getAttribute('col'));
-
-		if (foodX === snakeList[0][0] && foodY === snakeList[0][1]) {
-			food.classList.toggle("food");
-			alert("Ass");
-			//Add score
-			//Generate new food
 		}
 	}
 };
