@@ -2,6 +2,7 @@ let height;
 let width;
 let snakeList;
 let outOfRange;
+let direction = 'right';
 const game = {
 	init: function() {
 		const queryString = window.location.search;
@@ -38,7 +39,8 @@ const game = {
         this.generateBoard(boardHeight, boardWidth);
         this.putSnakeOnTheBoard(color, snakeList);
         this.placeFood(boardHeight, boardWidth);
-        document.addEventListener('keydown', this.moveSnake);
+        document.addEventListener('keydown', this.changeDirection);
+        window.setInterval(this.moveSnake,300);
 	},
 
 	generateBoard: function(height, width) {
@@ -128,6 +130,25 @@ const game = {
 			}
 		}
 	},
+	changeDirection: function(event){
+		//changing direction
+		switch (event.key) {
+			//snake head coordinates change according to keys
+			// body parts will get the coordinates of the previous body part
+			case 'ArrowUp':
+				direction = 'up';
+				break;
+			case 'ArrowDown':
+				direction = 'down';
+				break;
+			case 'ArrowRight':
+				direction = 'right';
+				break;
+			case 'ArrowLeft':
+				direction = 'left';
+				break;
+		}
+	},
 	moveSnake: function(event){
 		const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
@@ -136,38 +157,39 @@ const game = {
 		let last_index = snakeList.length - 1;
 		let last_body_row = snakeList[last_index][0];
 		let last_body_col = snakeList[last_index][1];
-		switch (event.key) {
-			//snake head coordinates change according to keys
-			// body parts will get the coordinates of the previous body part
-			case 'ArrowUp':
-				for (let i = snakeList.length - 1; i > 0; i--){
+		// moving
+		if (direction==='up'){
+			for (let i = snakeList.length - 1; i > 0; i--){
 					snakeList[i][0] = snakeList[i - 1][0];
 					snakeList[i][1] = snakeList[i - 1][1];
 				}
 				snakeList[0][0] = snakeList[0][0] - 1;
-				break;
-			case 'ArrowDown':
-				for (let i = snakeList.length - 1; i > 0; i--){
+		}
+		if (direction==='down'){
+			for (let i = snakeList.length - 1; i > 0; i--){
 					snakeList[i][0] = snakeList[i - 1][0];
 					snakeList[i][1] = snakeList[i - 1][1];
 				}
 				snakeList[0][0] = snakeList[0][0] + 1;
-				break;
-			case 'ArrowRight':
-				for (let i = snakeList.length - 1; i > 0; i--){
+		}
+		if (direction==='right'){
+			for (let i = snakeList.length - 1; i > 0; i--){
 					snakeList[i][0] = snakeList[i - 1][0];
 					snakeList[i][1] = snakeList[i - 1][1];
 				}
 				snakeList[0][1] = snakeList[0][1] + 1;
-				break;
-			case 'ArrowLeft':
-				for (let i = snakeList.length - 1; i > 0; i--){
+		}
+		if (direction==='left'){
+			for (let i = snakeList.length - 1; i > 0; i--){
 					snakeList[i][0] = snakeList[i - 1][0];
 					snakeList[i][1] = snakeList[i - 1][1];
 				}
 				snakeList[0][1] = snakeList[0][1] - 1;
-				break;
 		}
+
+
+
+
 		for (let field of fields) {
 			// Clear the table before replacing snake - display movement
 			if (field.classList.contains(color)){
