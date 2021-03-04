@@ -10,10 +10,16 @@ let won = false;
 let playerName;
 const game = {
 	init: function() {
+		if (document.cookie.indexOf('highscore=') ==-1){
+			document.cookie = "highscore=10";
+		}
 		const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const size = urlParams.get('size');
 		playerName = urlParams.get('player-name');
+		if (document.cookie.indexOf('championname=') ==-1){
+			document.cookie = "championname" + "=" + playerName + ";"
+		}
         let boardHeight = 14;
         let boardWidth = 18;
         height = boardHeight;
@@ -50,8 +56,21 @@ const game = {
 		currentScore = 0;
 		scoreField = document.querySelector("#current-score");
 		scoreField.setAttribute("score", currentScore);
-		console.log(scoreField.getAttribute("score"));
 		scoreField.innerHTML = scoreField.getAttribute("score");
+	},
+	getCookie: function (cname) {
+		let name = cname + "=";
+		let ca = document.cookie.split(';');
+		for (let i = 0; i < ca.length; i++) {
+			let c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
 	},
 	generateBoard: function(height, width) {
 		let containerDiv = document.querySelector(".game-field");
@@ -293,13 +312,23 @@ const game = {
 			if (outOfRange) {
 				document.querySelector(".snake-head").innerText = ":(";
 				gameDisabled = true;
+				console.log(this);
 				alert(`You lost, ${playerName}. Final score: ${currentScore}`);
+				game.checkCookies();
 				break;
 			}
 		}
     	if (won){
     		alert(`You won, ${playerName}!!!! Final score: ${currentScore}`);
     		gameDisabled = true;
+    		game.checkCookies();
+
+		}
+	},
+	checkCookies: function(){
+		if (parseInt(this.getCookie("highscore"))< currentScore){
+			document.cookie = "highscore=" + currentScore;
+			document.cookie = "championname=" + playerName;
 		}
 	}
 };
