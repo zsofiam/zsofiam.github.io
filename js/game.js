@@ -5,6 +5,8 @@ let outOfRange;
 let currentScore;
 let gameDisabled = false;
 let direction = 'right';
+let foodCount = 10;
+let won = false;
 let playerName;
 const game = {
 	init: function() {
@@ -195,8 +197,6 @@ const game = {
 			}
 			snakeList[0][1] = snakeList[0][1] - 1;
 		}
-
-
 		for (let field of fields) {
 			// Clear the table before replacing snake - display movement
 			if (field.classList.contains(color)) {
@@ -238,7 +238,14 @@ const game = {
 							fields[i].classList.add(color);
 							fields[i].innerText = ":3";
 							// this.placeFood(width,height)
-							let foodNeedsPlace = true;
+							let foodNeedsPlace;
+							foodCount--;
+							if (foodCount === 0){
+								won = true;
+								foodNeedsPlace = false;
+							} else {
+								foodNeedsPlace = true;
+							}
 							while (foodNeedsPlace) {
 								let foodRow = Math.floor(Math.random() * height);
 								let foodCol = Math.floor(Math.random() * width);
@@ -284,12 +291,15 @@ const game = {
 				}
 			}
 			if (outOfRange) {
-				alert("You lost!");
 				document.querySelector(".snake-head").innerText = ":(";
 				gameDisabled = true;
-				alert(`Congratulations, ${playerName}! Final score: ${currentScore}`);
+				alert(`You lost, ${playerName}. Final score: ${currentScore}`);
 				break;
 			}
+		}
+    	if (won){
+    		alert(`You won, ${playerName}!!!! Final score: ${currentScore}`);
+    		gameDisabled = true;
 		}
 	}
 };
