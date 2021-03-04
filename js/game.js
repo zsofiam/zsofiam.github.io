@@ -285,6 +285,7 @@ const game = {
 				alert("You lost!");
 				document.querySelector(".snake-head").innerText = ":(";
 				gameDisabled = true;
+				alert(`Congratulations! Final score: ${currentScore}`);
 				break;
 			}
 		}
