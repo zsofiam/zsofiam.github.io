@@ -40,13 +40,12 @@ const game = {
         this.putSnakeOnTheBoard(color, snakeList);
         this.placeFood(boardHeight, boardWidth);
         document.addEventListener('keydown', this.moveSnake);
-		currentScore = 12;
+		currentScore = 0;
 		scoreField = document.querySelector("#current-score");
 		scoreField.setAttribute("score", currentScore);
 		console.log(scoreField.getAttribute("score"));
 		scoreField.innerHTML = scoreField.getAttribute("score");
 	},
-
 	generateBoard: function(height, width) {
 		let containerDiv = document.querySelector(".game-field");
 
@@ -206,6 +205,10 @@ const game = {
 					parseInt(fields[i].getAttribute("col")) === item[1]){
 						// if ate food
 						if (fields[i].classList.contains("food")){
+							//increase score by 10
+							currentScore = parseInt(scoreField.getAttribute("score")) +10;
+							scoreField.setAttribute("score", currentScore);
+							scoreField.innerHTML = scoreField.getAttribute("score");
 							fields[i].classList.remove("food");
 							fields[i].classList.add("snake-head");
 							fields[i].classList.add(color);
@@ -272,7 +275,7 @@ const game = {
 			//Add score
 			//Generate new food
 		}
-	}
+	},
 };
 
 game.init();
