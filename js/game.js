@@ -5,7 +5,7 @@ let outOfRange;
 let currentScore;
 let gameDisabled = false;
 let direction = 'right';
-let foodCount = 10;
+let foodCount = 30;
 let won = false;
 let playerName;
 const game = {
